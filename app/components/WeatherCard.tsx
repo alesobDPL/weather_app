@@ -3,17 +3,27 @@
 import { WeatherData } from '../types/weather';
 import { Card } from '@/components/ui/card';
 import { Cloud, Droplets, Thermometer, Wind } from 'lucide-react';
+import { byIso } from 'country-code-lookup';
 
 interface WeatherCardProps {
   data: WeatherData;
 }
+
+
+const formattedCountryName = (contryCode: string) => {
+  const countryInfo  = byIso(contryCode); // Convierte "AR" a "Argentina"
+  return countryInfo ? countryInfo.country : contryCode;
+  
+};
+
+
 
 export default function WeatherCard({ data }: WeatherCardProps) {
   return (
     <Card className="w-full max-w-md p-6 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-950">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-          {data.location.name}, {data.location.country}
+        {data.location.name}, {formattedCountryName(data.location.country)}
         </h2>
         <div className="flex items-center justify-center mt-4">
           <img
